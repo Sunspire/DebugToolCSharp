@@ -1,0 +1,22 @@
+﻿@model DebugToolCSharp.Models.Users
+
+@{
+    ViewBag.Title = "Login";
+}
+
+    <div>
+        <h2>Login</h2>
+    </div>
+    <div>
+        @using (Html.BeginForm("Index", "Login", FormMethod.Post))
+        {
+            @Html.TextBoxFor(m => m.Login)
+            <br/>
+            @Html.PasswordFor(m => m.Password)
+            <br />
+            <input id="Submit1" type="submit" value="Login" />
+        }
+
+    </div>
+
+
