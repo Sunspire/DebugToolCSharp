@@ -4,6 +4,7 @@ using System.Linq;
 using System.Web;
 using System.Data.SQLite;
 using System.IO;
+using System.Configuration;
 
 namespace DebugToolCSharp.Models
 {
@@ -13,8 +14,8 @@ namespace DebugToolCSharp.Models
 
         public Database()
         {
-            var dbName = "C:\\Work\\DebugTool\\DebugToolCSharp\\DB\\DebugTool.db";
-            Connection = new SQLiteConnection("Data Source=" + dbName);
+            var dbName = ConfigurationManager.AppSettings["SQLitePath"];
+            Connection = new SQLiteConnection(string.Format("Data Source={0}", dbName));
 
             if (!File.Exists(dbName)) 
             {
