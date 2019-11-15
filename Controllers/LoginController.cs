@@ -5,6 +5,7 @@ using System.Web;
 using System.Web.Mvc;
 using DebugToolCSharp.Models;
 using System.Data.SQLite;
+using DebugToolCSharp.Classes;
 
 namespace DebugToolCSharp.Controllers
 {
@@ -13,18 +14,16 @@ namespace DebugToolCSharp.Controllers
         // GET: Login
         public ActionResult Index()
         {
-            
 
-            var user = new Users();
+            var dbObject = new Database();
 
-            user.Name = "Fred";
-
-            return View("Index", user);
+            return View("Index");
         }
 
         [HttpPost]
         public ActionResult Index(Users user)
         {
+            /*
             var login = user.Login;
             var pwd = user.Password;
             var dbObject = new Database();
@@ -47,6 +46,8 @@ namespace DebugToolCSharp.Controllers
                 }
             }
             dbObject.CloseConnection();
+            */
+            var loginResult = Queries.GetLogin(user.Login, user.Password);
             return View("Index");
         }
 
