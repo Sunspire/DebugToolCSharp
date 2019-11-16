@@ -14,113 +14,29 @@ namespace DebugToolCSharp.Controllers
         // GET: Login
         public ActionResult Index()
         {
-
-            var dbObject = new Database();
-
-            return View("Index");
+            var mLogin = new LoginModel();
+            mLogin.Sucess = true;
+            return View("Index", mLogin);
         }
 
         [HttpPost]
-        public ActionResult Index(Users user)
+        public ActionResult Index(LoginModel loginModel)
         {
-            /*
-            var login = user.Login;
-            var pwd = user.Password;
-            var dbObject = new Database();
-            var q = "select count(1) as mycount from users where login=@login and password=@pwd";
-
-            SQLiteCommand cmd = new SQLiteCommand(q, dbObject.Connection);
-            dbObject.OpenConnection();
-            cmd.Parameters.AddWithValue("@login", login);
-            cmd.Parameters.AddWithValue("@pwd", pwd);
-            SQLiteDataReader result = cmd.ExecuteReader();
-
-            if (result.HasRows)
+            var mLogin = new LoginModel();
+            mLogin.Sucess = true;
+            if (!Queries.GetLogin(loginModel.Login, loginModel.Password)) 
             {
-                while (result.Read())
-                {
-                    if (int.Parse(result["mycount"].ToString()) == 1) 
-                    {
-                        //login
-                    }
-                }
+                mLogin.Sucess = false;
+                return View("Index", mLogin);
             }
-            dbObject.CloseConnection();
-            */
-            var loginResult = Queries.GetLogin(user.Login, user.Password);
-            return View("Index");
+            CreateLoginSession(loginModel);
+            return RedirectToAction("../Home");
         }
 
-        // GET: Login/Details/5
-        public ActionResult Details(int id)
+        public void CreateLoginSession(LoginModel loginModel)
         {
-            return View();
-        }
-
-        // GET: Login/Create
-        public ActionResult Create()
-        {
-            return View();
-        }
-
-        // POST: Login/Create
-        [HttpPost]
-        public ActionResult Create(FormCollection collection)
-        {
-            try
-            {
-                // TODO: Add insert logic here
-
-                return RedirectToAction("Index");
-            }
-            catch
-            {
-                return View();
-            }
-        }
-
-        // GET: Login/Edit/5
-        public ActionResult Edit(int id)
-        {
-            return View();
-        }
-
-        // POST: Login/Edit/5
-        [HttpPost]
-        public ActionResult Edit(int id, FormCollection collection)
-        {
-            try
-            {
-                // TODO: Add update logic here
-
-                return RedirectToAction("Index");
-            }
-            catch
-            {
-                return View();
-            }
-        }
-
-        // GET: Login/Delete/5
-        public ActionResult Delete(int id)
-        {
-            return View();
-        }
-
-        // POST: Login/Delete/5
-        [HttpPost]
-        public ActionResult Delete(int id, FormCollection collection)
-        {
-            try
-            {
-                // TODO: Add delete logic here
-
-                return RedirectToAction("Index");
-            }
-            catch
-            {
-                return View();
-            }
+            LoginModel userDetails = Queries.GetUserDetails(loginModel.Login, loginModel.Password);
+            Session["userLogin"] = userDetails;
         }
     }
 }

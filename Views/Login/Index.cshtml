@@ -1,4 +1,4 @@
-﻿@model DebugToolCSharp.Models.Users
+﻿@model DebugToolCSharp.Models.LoginModel
 
 @{
     ViewBag.Title = "Login";
@@ -16,7 +16,12 @@
             <br />
             <input id="Submit1" type="submit" value="Login" />
         }
-
     </div>
+<div>
+    @if (Model.Sucess == false) 
+    {
+        <div>Error: Login is not working.</div>
+    }
+</div>
 
 

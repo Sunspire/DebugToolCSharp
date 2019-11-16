@@ -6,7 +6,7 @@ using System.Data.SQLite;
 using System.IO;
 using System.Configuration;
 
-namespace DebugToolCSharp.Models
+namespace DebugToolCSharp.Classes
 {
     public class Database
     {
