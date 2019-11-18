@@ -52,8 +52,8 @@ namespace DebugToolCSharp.Classes
             {
                 while (result.Read())
                 {
-                    loginModel.Id = (int)result["id"];
-                    loginModel.Name = (string)result["name"];
+                    loginModel.Id = int.Parse(result["id"].ToString());
+                    loginModel.Name = result["name"].ToString();
                 }
             }
             dbObject.CloseConnection();

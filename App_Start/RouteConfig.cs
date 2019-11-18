@@ -24,6 +24,18 @@ namespace DebugToolCSharp
                 url: "{controller}/{action}",
                 defaults: new { controller = "Login", action = "Index" }
                 );
+
+            routes.MapRoute(
+                name: "UserManagement",
+                url: "{controller}/{action}",
+                defaults: new { controller = "UserManagement", action = "Index" }
+                );
+
+            routes.MapRoute(
+                name: "AddUser",
+                url: "{controller}/{action}",
+                defaults: new { controller = "UserManagement", action = "AddUser" }
+                );
         }
     }
 }
