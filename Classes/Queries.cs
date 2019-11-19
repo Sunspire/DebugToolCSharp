@@ -98,7 +98,6 @@ namespace DebugToolCSharp.Classes
                     }
                 }
             }
-            dbObject.CloseConnection();
 
             q = "insert into roles values(@id,@roleName)";
             using (SQLiteCommand cmd = new SQLiteCommand(q, dbObject.Connection)) 
@@ -134,6 +133,98 @@ namespace DebugToolCSharp.Classes
             }
             dbObject.CloseConnection();
             return listRoles; 
+        }
+
+        public string AddUser(UserManagement userManagement) 
+        {
+            var dbObject = new Database();
+            var q = "select count(1) as mycount from users where login=@login";
+
+            using (SQLiteCommand cmd = new SQLiteCommand(q, dbObject.Connection))
+            {
+                dbObject.OpenConnection();
+                cmd.Parameters.AddWithValue("@login", userManagement.UserLogin);
+                SQLiteDataReader result = cmd.ExecuteReader();
+
+                if (result.HasRows)
+                {
+                    while (result.Read())
+                    {
+                        if (int.Parse(result["mycount"].ToString()) == 1)
+                        {
+                            dbObject.CloseConnection();
+                            return "This login already exists";
+                        }
+                    }
+                }
+            }
+
+            q = "select (max(id) + 1) as [maxId] from users";
+            int userId = 1;
+            using (SQLiteCommand cmd = new SQLiteCommand(q, dbObject.Connection))
+            {
+                dbObject.OpenConnection();
+                SQLiteDataReader result = cmd.ExecuteReader();
+
+                if (result.HasRows)
+                {
+                    while (result.Read())
+                    {
+                        var resultMID = result["maxId"].ToString();
+                        if (!string.IsNullOrEmpty(resultMID))
+                        {
+                            userId = int.Parse(resultMID);
+                        }
+                    }
+                }
+            }
+            dbObject.CloseConnection();
+
+            q = "insert into users values(@id, @name, @login, @password)";
+            using (SQLiteCommand cmd = new SQLiteCommand(q, dbObject.Connection))
+            {
+                dbObject.OpenConnection();
+                cmd.Parameters.AddWithValue("@id", userId);
+                cmd.Parameters.AddWithValue("@name", userManagement.UserName);
+                cmd.Parameters.AddWithValue("@login", userManagement.UserLogin);
+                cmd.Parameters.AddWithValue("@password", userManagement.UserPassword);
+                cmd.ExecuteNonQuery();
+            }
+            dbObject.CloseConnection();
+
+            q = "select (max(id) + 1) as [maxId] from users_roles";
+            int userRoleId = 1;
+            using (SQLiteCommand cmd = new SQLiteCommand(q, dbObject.Connection))
+            {
+                dbObject.OpenConnection();
+                SQLiteDataReader result = cmd.ExecuteReader();
+
+                if (result.HasRows)
+                {
+                    while (result.Read())
+                    {
+                        var resultMID = result["maxId"].ToString();
+                        if (!string.IsNullOrEmpty(resultMID))
+                        {
+                            userRoleId = int.Parse(resultMID);
+                        }
+                    }
+                }
+            }
+            dbObject.CloseConnection();
+
+            q = "insert into users_roles values(@id, @user_id, @role_id)";
+            using (SQLiteCommand cmd = new SQLiteCommand(q, dbObject.Connection))
+            {
+                dbObject.OpenConnection();
+                cmd.Parameters.AddWithValue("@id", userRoleId);
+                cmd.Parameters.AddWithValue("@user_id", userId);
+                cmd.Parameters.AddWithValue("@role_id", userManagement.RoleId);
+                cmd.ExecuteNonQuery();
+            }
+            dbObject.CloseConnection();
+
+            return string.Empty;
         }
     }
 }

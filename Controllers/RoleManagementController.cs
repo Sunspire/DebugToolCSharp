@@ -19,7 +19,10 @@ namespace DebugToolCSharp.Controllers
         [HttpGet]
         public ActionResult AddRole()
         {
-            return View();
+            var mRoleManagement = new RoleManagement();
+            mRoleManagement.Success = true;
+            mRoleManagement.Message = string.Empty;
+            return View("AddRole", mRoleManagement);
         }
 
         [HttpPost]
@@ -27,14 +30,14 @@ namespace DebugToolCSharp.Controllers
         {
             var mRoleManagement = new RoleManagement();
             mRoleManagement.Success = true;
-            if (string.IsNullOrEmpty(roleManagement.role))
+            if (string.IsNullOrEmpty(roleManagement.Role))
             {
                 mRoleManagement.Success = false;
                 mRoleManagement.Message = "Role is empty";
                 return View("AddRole", mRoleManagement);
             }
 
-            var result = Queries.AddRole(roleManagement.role);
+            var result = Queries.AddRole(roleManagement.Role);
             if (string.IsNullOrEmpty(result))
             {
                 mRoleManagement.Success = true;
@@ -42,10 +45,10 @@ namespace DebugToolCSharp.Controllers
             }
             else
             {
-                mRoleManagement.Success = true;
+                mRoleManagement.Success = false;
                 mRoleManagement.Message = result;
             }
-            return View();
+            return View("AddRole", mRoleManagement);
         }
     }
 }

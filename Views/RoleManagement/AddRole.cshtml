@@ -1,13 +1,29 @@
 ﻿@model DebugToolCSharp.Models.RoleManagement
 
-@using (Html.BeginForm()) 
+@using (Html.BeginForm())
 {
     @Html.AntiForgeryToken()
-    
+
     <div class="form-horizontal">
         <h4>Roles</h4>
         <hr />
-        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        @*Html.ValidationSummary(true, "", new { @class = "text-danger" })*@
+        @{
+            if (!string.IsNullOrEmpty(Model.Message))
+            {
+                var cssClass = string.Empty;
+                if (Model.Success)
+                {
+                    cssClass = "text-info";
+                }
+                else 
+                { 
+                    cssClass = "text-danger";
+                }
+
+                @Html.Label(@Model.Message, new { @class = cssClass })
+            }
+        }
         <div class="form-group">
             @Html.LabelFor(model => model.Role, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
