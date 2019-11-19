@@ -4,6 +4,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using DebugToolCSharp.Models;
+using DebugToolCSharp.Classes;
 
 namespace DebugToolCSharp.Controllers
 {
@@ -18,12 +19,18 @@ namespace DebugToolCSharp.Controllers
         [HttpGet]
         public ActionResult AddUser()
         {
-            return View();
+            var mUserManagement = new UserManagement();
+
+            mUserManagement.Roles = Queries.GetAllRoles();
+            
+            return View("AddUser", mUserManagement);
         }
 
         [HttpPost]
         public ActionResult AddUser(UserManagement userManagement)
         {
+            var mUserManagement = new UserManagement();
+
             return View();
         }
     }

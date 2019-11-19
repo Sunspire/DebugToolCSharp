@@ -60,5 +60,80 @@ namespace DebugToolCSharp.Classes
 
             return loginModel;
         }
+
+        public static string AddRole(string roleName) 
+        {
+            var dbObject = new Database();
+            var q = "select * from roles where role=@roleName";
+
+            using (SQLiteCommand cmd = new SQLiteCommand(q, dbObject.Connection)) 
+            {
+                dbObject.OpenConnection();
+                cmd.Parameters.AddWithValue("@roleName", roleName);
+                SQLiteDataReader result = cmd.ExecuteReader();
+
+                if (result.HasRows)
+                {
+                    dbObject.CloseConnection();
+                    return "This role already exists";
+                }
+            }                
+
+            q = "select (max(id) + 1) as [maxId] from roles";
+            int maxId = 1;
+            using (SQLiteCommand cmd = new SQLiteCommand(q, dbObject.Connection)) 
+            {
+                dbObject.OpenConnection();
+                SQLiteDataReader result = cmd.ExecuteReader();
+
+                if (result.HasRows)
+                {
+                    while (result.Read())
+                    {
+                        var resultMID = result["maxId"].ToString();
+                        if (!string.IsNullOrEmpty(resultMID))
+                        {
+                            maxId = int.Parse(resultMID);
+                        }
+                    }
+                }
+            }
+            dbObject.CloseConnection();
+
+            q = "insert into roles values(@id,@roleName)";
+            using (SQLiteCommand cmd = new SQLiteCommand(q, dbObject.Connection)) 
+            {
+                dbObject.OpenConnection();
+                cmd.Parameters.AddWithValue("@id", maxId);
+                cmd.Parameters.AddWithValue("@roleName", roleName);
+                cmd.ExecuteNonQuery();
+            }
+            dbObject.CloseConnection();
+
+            return string.Empty;
+        }
+
+        public static List<Roles> GetAllRoles()
+        {
+            var dbObject = new Database();
+            var listRoles = new List<Roles>();
+            var q = "select * from roles order by role";
+
+            using (SQLiteCommand cmd = new SQLiteCommand(q, dbObject.Connection))
+            {
+                dbObject.OpenConnection();
+                SQLiteDataReader result = cmd.ExecuteReader();
+
+                if (result.HasRows)
+                {
+                    while (result.Read())
+                    {
+                        listRoles.Add(new Roles() { Id = int.Parse(result["id"].ToString()), Role = result["role"].ToString() });
+                    }
+                }
+            }
+            dbObject.CloseConnection();
+            return listRoles; 
+        }
     }
 }
