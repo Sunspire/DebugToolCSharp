@@ -13,7 +13,9 @@ namespace DebugToolCSharp.Controllers
         // GET: RoleManagement
         public ActionResult Index()
         {
-            return View();
+            var mRoleManagement = new RoleManagement();
+            mRoleManagement.Roles = Queries.GetAllRoles();
+            return View("Index", mRoleManagement);
         }
 
         [HttpGet]
@@ -22,6 +24,7 @@ namespace DebugToolCSharp.Controllers
             var mRoleManagement = new RoleManagement();
             mRoleManagement.Success = true;
             mRoleManagement.Message = string.Empty;
+            mRoleManagement.Roles = Queries.GetAllRoles();
             return View("AddRole", mRoleManagement);
         }
 

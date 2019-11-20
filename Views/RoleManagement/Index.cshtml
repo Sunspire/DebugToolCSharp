@@ -1,4 +1,5 @@
-﻿@{
+﻿@model DebugToolCSharp.Models.RoleManagement
+@{
     ViewBag.Title = "Role Management";
 }
 
@@ -7,4 +8,13 @@
 </div>
 <div>
     @Html.ActionLink("Add Role", "AddRole", "RoleManagement")
+</div>
+<div>
+    @{
+        foreach (var role in Model.Roles) 
+        { 
+        <div>@role.Role</div> 
+        }
+    }
+
 </div>
