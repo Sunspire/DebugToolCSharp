@@ -1,8 +1,4 @@
 ﻿@model DebugToolCSharp.Models.UserManagement
-@{ 
-    List<int> roleIds = new List<int> { 1 };
-}
-@DebugToolCSharp.Classes.Security.VerifyLoginStatus(roleIds)
 @using (Html.BeginForm()) 
 {
     @Html.AntiForgeryToken()

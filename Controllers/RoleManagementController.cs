@@ -21,6 +21,9 @@ namespace DebugToolCSharp.Controllers
         [HttpGet]
         public ActionResult AddRole()
         {
+            List<int> roleIds = new List<int> { 1 };
+            Security.VerifyLoginStatus(roleIds);
+
             var mRoleManagement = new RoleManagement();
             mRoleManagement.Success = true;
             mRoleManagement.Message = string.Empty;
