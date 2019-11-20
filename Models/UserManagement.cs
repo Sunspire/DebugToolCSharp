@@ -14,5 +14,7 @@ namespace DebugToolCSharp.Models
         public string UserPassword { get; set; }
         public string RoleName { get; set; }
         public List<Roles> Roles {get; set;}
+        public bool Success { get; set; }
+        public string Message { get; set; }
     }
 }

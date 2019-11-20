@@ -7,10 +7,11 @@ namespace DebugToolCSharp.Models
 {
     public class LoginModel
     {
-        public int Id { get; set; }
+        public int UserId { get; set; }
         public string Name { get; set; }
         public string Login { get; set; }
         public string Password { get; set; }
         public bool Sucess { get; set; }
+        public int RoleId { get; set; }
     }
 }

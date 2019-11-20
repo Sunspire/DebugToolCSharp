@@ -1,4 +1,5 @@
-﻿using System;
+﻿using DebugToolCSharp.Models;
+using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Linq;
@@ -8,7 +9,7 @@ namespace DebugToolCSharp.Classes
 {
     public class Security
     {
-        public static System.Web.WebPages.HelperResult VerifyLoginStatus()
+        public static System.Web.WebPages.HelperResult VerifyLoginStatus(List<int> roleIds)
         {
             var loginSessionName = ConfigurationManager.AppSettings["LoginSessionName"].ToString();
             if (HttpContext.Current.Session[loginSessionName] is null) 
@@ -25,6 +26,15 @@ namespace DebugToolCSharp.Classes
                 //HttpContext.Current.Session[ConfigurationManager.AppSettings["LoginRedirectName"].ToString()] = HttpContext.Current.Request.Url.AbsolutePath;
                 HttpContext.Current.Response.Redirect("/Login");
             }
+
+            LoginModel userDetails = new LoginModel();
+            userDetails = (LoginModel)HttpContext.Current.Session[loginSessionName];
+
+            if (!roleIds.Contains(userDetails.RoleId)) 
+            {
+                HttpContext.Current.Response.Redirect("/Login");
+            }
+
             return null;
         }
     }

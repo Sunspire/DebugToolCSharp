@@ -23,7 +23,7 @@ namespace DebugToolCSharp.Classes
             }
         }
 
-        public void OpenConnection()
+        /*public void OpenConnection()
         {
             if (Connection.State != System.Data.ConnectionState.Open)
             {
@@ -37,6 +37,6 @@ namespace DebugToolCSharp.Classes
             {
                 Connection.Close();
             }
-        }
+        }*/
     }
 }
