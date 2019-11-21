@@ -155,6 +155,33 @@ namespace DebugToolCSharp.Classes
             return listRoles; 
         }
 
+        public static Roles GetRoleById(int id) 
+        {
+            var mRoles = new Roles();
+            var q = "select * from roles where id = @id";
+
+            using (SQLiteConnection c = new SQLiteConnection(ConfigurationManager.AppSettings["SQLiteConnectionString"]))
+            {
+                c.Open();
+                using (SQLiteCommand cmd = new SQLiteCommand(q, c))
+                {
+                    cmd.Parameters.AddWithValue("@id", id);
+                    using (SQLiteDataReader result = cmd.ExecuteReader())
+                    {
+                        if (result.HasRows)
+                        {
+                            while (result.Read())
+                            {
+                                mRoles.Id = int.Parse(result["id"].ToString());
+                                mRoles.Role = result["role"].ToString();
+                            }
+                        }
+                    }
+                }
+            }
+            return mRoles;
+        }
+
         public static string AddUser(UserManagement userManagement) 
         {
             var q = "select count(1) as mycount from users where login=@login";

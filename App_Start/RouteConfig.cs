@@ -48,6 +48,12 @@ namespace DebugToolCSharp
                 url: "{controller}/{action}",
                 defaults: new { controller = "RoleManagement", action = "AddRole" }
                 );
+
+            routes.MapRoute(
+                name: "EditRole",
+                url: "{controller}/{action}/{id}",
+                defaults: new { controller = "RoleManagement", action = "EditRole", id = UrlParameter.Optional }
+                );
         }
     }
 }

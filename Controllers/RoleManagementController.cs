@@ -56,5 +56,34 @@ namespace DebugToolCSharp.Controllers
             }
             return View("AddRole", mRoleManagement);
         }
+
+        [HttpGet]
+        public ActionResult EditRole(int id)
+        {
+            var mRoles = new Roles();
+            var mRoleManagement = new RoleManagement();
+
+            mRoles = Queries.GetRoleById(id);
+            mRoleManagement.Id = mRoles.Id;
+            mRoleManagement.Role = mRoles.Role;
+
+            return View("EditRole", mRoleManagement);
+        }
+
+        [HttpPost]
+        public ActionResult EditRole(RoleManagement roleManagement)
+        {
+            var mRoleManagement = new RoleManagement();
+            mRoleManagement.Success = true;
+            if (string.IsNullOrEmpty(roleManagement.Role))
+            {
+                mRoleManagement.Success = false;
+                mRoleManagement.Message = "Role is empty";
+                mRoleManagement.Id = roleManagement.Id;
+                return View("EditRole", mRoleManagement);
+            }
+
+            return View();
+        }
     }
 }

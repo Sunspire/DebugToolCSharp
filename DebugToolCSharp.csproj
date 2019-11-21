@@ -231,6 +231,7 @@
     <Content Include="Views\UserManagement\Index.cshtml" />
     <Content Include="Views\RoleManagement\Index.cshtml" />
     <Content Include="Views\RoleManagement\AddRole.cshtml" />
+    <Content Include="Views\RoleManagement\EditRole.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
