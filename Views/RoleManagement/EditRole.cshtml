@@ -7,9 +7,24 @@
     <div class="form-horizontal">
         <h4>Role Management</h4>
         <hr />
-        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-        @Html.HiddenFor(model => model.Id)
-        @Html.HiddenFor(model => model.PreviousRole)
+        @*Html.ValidationSummary(true, "", new { @class = "text-danger" })*@
+
+        @{
+            if (!string.IsNullOrEmpty(Model.Message))
+            {
+                var cssClass = string.Empty;
+                if (Model.Success)
+                {
+                    cssClass = "text-info";
+                }
+                else
+                {
+                    cssClass = "text-danger";
+                }
+
+                @Html.Label(@Model.Message, new { @class = cssClass })
+            }
+        }
 
         <div class="form-group">
             @Html.LabelFor(model => model.Role, htmlAttributes: new { @class = "control-label col-md-2" })
@@ -18,6 +33,8 @@
                 @Html.ValidationMessageFor(model => model.Role, "", new { @class = "text-danger" })
             </div>
         </div>
+        @Html.HiddenFor(model => model.Id)
+        @Html.HiddenFor(model => model.PreviousRole)
 
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">

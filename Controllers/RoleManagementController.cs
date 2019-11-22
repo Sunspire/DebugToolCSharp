@@ -86,11 +86,13 @@ namespace DebugToolCSharp.Controllers
                 return View("EditRole", mRoleManagement);
             }
 
-            var result = Queries.UpdateRoleById(roleManagement);
-
-            if (string.IsNullOrEmpty(result)) 
+            mRoleManagement.Message = Queries.UpdateRoleById(roleManagement);
+            mRoleManagement.Success = false;
+            
+            if (string.IsNullOrEmpty(mRoleManagement.Message))
             {
                 mRoleManagement.Success = true;
+                mRoleManagement.Message = "Role name updated";
             }
 
             var mRoles = Queries.GetRoleById(roleManagement.Id);
