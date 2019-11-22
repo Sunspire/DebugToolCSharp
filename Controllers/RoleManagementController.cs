@@ -66,6 +66,7 @@ namespace DebugToolCSharp.Controllers
             mRoles = Queries.GetRoleById(id);
             mRoleManagement.Id = mRoles.Id;
             mRoleManagement.Role = mRoles.Role;
+            mRoleManagement.PreviousRole = mRoles.Role;
 
             return View("EditRole", mRoleManagement);
         }
@@ -74,16 +75,30 @@ namespace DebugToolCSharp.Controllers
         public ActionResult EditRole(RoleManagement roleManagement)
         {
             var mRoleManagement = new RoleManagement();
+     
+            mRoleManagement.Id = roleManagement.Id;
             mRoleManagement.Success = true;
+            
             if (string.IsNullOrEmpty(roleManagement.Role))
             {
                 mRoleManagement.Success = false;
                 mRoleManagement.Message = "Role is empty";
-                mRoleManagement.Id = roleManagement.Id;
                 return View("EditRole", mRoleManagement);
             }
 
-            return View();
+            var result = Queries.UpdateRoleById(roleManagement);
+
+            if (string.IsNullOrEmpty(result)) 
+            {
+                mRoleManagement.Success = true;
+            }
+
+            var mRoles = Queries.GetRoleById(roleManagement.Id);
+            
+            mRoleManagement.Role = mRoles.Role;
+            mRoleManagement.PreviousRole = mRoles.Role;
+
+            return View("EditRole", mRoleManagement);
         }
     }
 }

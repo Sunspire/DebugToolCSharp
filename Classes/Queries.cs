@@ -182,6 +182,57 @@ namespace DebugToolCSharp.Classes
             return mRoles;
         }
 
+        public static Roles GetRoleByName(string roleName)
+        {
+            var mRoles = new Roles();
+            var q = "select * from roles where role = @roleName";
+
+            using (SQLiteConnection c = new SQLiteConnection(ConfigurationManager.AppSettings["SQLiteConnectionString"]))
+            {
+                c.Open();
+                using (SQLiteCommand cmd = new SQLiteCommand(q, c))
+                {
+                    cmd.Parameters.AddWithValue("@roleName", roleName);
+                    using (SQLiteDataReader result = cmd.ExecuteReader())
+                    {
+                        if (result.HasRows)
+                        {
+                            while (result.Read())
+                            {
+                                mRoles.Id = int.Parse(result["id"].ToString());
+                                mRoles.Role = result["role"].ToString();
+                            }
+                        }
+                    }
+                }
+            }
+
+            return mRoles;
+        }
+
+        public static string UpdateRoleById(RoleManagement roleManagement)
+        {
+            if (!string.IsNullOrEmpty(GetRoleByName(roleManagement.Role).Role)) 
+            {
+                return "This role already exists";
+            }
+
+            var q = "update roles set role = @roleName where id = @roleId";
+
+            using (SQLiteConnection c = new SQLiteConnection(ConfigurationManager.AppSettings["SQLiteConnectionString"]))
+            {
+                c.Open();
+                using (SQLiteCommand cmd = new SQLiteCommand(q, c))
+                {
+                    cmd.Parameters.AddWithValue("@roleId", roleManagement.Id);
+                    cmd.Parameters.AddWithValue("@roleName", roleManagement.Role);
+                    cmd.ExecuteNonQuery();
+                }
+            }
+
+            return string.Empty;
+        }
+
         public static string AddUser(UserManagement userManagement) 
         {
             var q = "select count(1) as mycount from users where login=@login";
