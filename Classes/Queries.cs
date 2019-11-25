@@ -10,6 +10,82 @@ namespace DebugToolCSharp.Classes
 {
     public class Queries
     {
+        public static List<Pages> GetAllPages() 
+        {
+            var listPages = new List<Pages>();
+            var q = "select * from pages";
+            
+            using (SQLiteConnection c = new SQLiteConnection(ConfigurationManager.AppSettings["SQLiteConnectionString"]))
+            {
+                c.Open();
+                using (SQLiteCommand cmd = new SQLiteCommand(q, c))
+                {
+                    using (SQLiteDataReader result = cmd.ExecuteReader())
+                    {
+                        if (result.HasRows)
+                        {
+                            while (result.Read())
+                            {
+                                listPages.Add(new Pages() { Id = int.Parse(result["id"].ToString()), PageName = result["page_name"].ToString() });
+                            }
+                        }
+                    }
+                }
+            }
+
+            return listPages;
+        }
+
+        public static Pages GetPageById(int id)
+        {
+            var mPages = new Pages();
+            var q = "select * from pages where id = @id";
+            var listRoleIds = new List<int>();
+
+            using (SQLiteConnection c = new SQLiteConnection(ConfigurationManager.AppSettings["SQLiteConnectionString"]))
+            {
+                c.Open();
+                using (SQLiteCommand cmd = new SQLiteCommand(q, c))
+                {
+                    cmd.Parameters.AddWithValue("@id", id);
+                    using (SQLiteDataReader result = cmd.ExecuteReader())
+                    {
+                        if (result.HasRows)
+                        {
+                            while (result.Read())
+                            {
+                                mPages.Id = id;
+                                mPages.PageName = result["page_name"].ToString();
+                            }
+                        }
+                    }
+                }
+            }
+
+            q = "select role_id from pages_roles where page_id = @id";
+            using (SQLiteConnection c = new SQLiteConnection(ConfigurationManager.AppSettings["SQLiteConnectionString"]))
+            {
+                c.Open();
+                using (SQLiteCommand cmd = new SQLiteCommand(q, c))
+                {
+                    cmd.Parameters.AddWithValue("@id", id);
+                    using (SQLiteDataReader result = cmd.ExecuteReader())
+                    {
+                        if (result.HasRows)
+                        {
+                            while (result.Read())
+                            {
+                                listRoleIds.Add(int.Parse(result["role_id"].ToString()));
+                            }
+                        }
+                    }
+                }
+            }
+            mPages.RoleIds = listRoleIds;
+
+            return mPages;
+        }
+
         public static bool GetLogin(string login, string pwd)
         {
             var q = "select count(1) as mycount from users where login=@login and password=@pwd";

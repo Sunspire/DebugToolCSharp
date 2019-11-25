@@ -1,0 +1,21 @@
+﻿@model DebugToolCSharp.Models.AccessManagement
+@{
+    ViewBag.Title = "Access Management";
+}
+
+<div>
+    <h2>Access Management</h2>
+    <br /><br />
+</div>
+<div>Pages:<br /><br /></div>
+<div>
+    @{
+        foreach (var page in Model.ListPages)
+        {
+        <div>
+            @Html.ActionLink(page.PageName, "EditAccess/" + page.Id, "AccessManagement")
+        </div>
+        }
+    }
+
+</div>

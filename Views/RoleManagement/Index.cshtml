@@ -8,12 +8,16 @@
 </div>
 <div>
     @Html.ActionLink("Add Role", "AddRole", "RoleManagement")
+    <br /><br />
 </div>
+<div>Click on a role to edit it.</div>
 <div>
     @{
         foreach (var role in Model.Roles) 
         { 
-        <div>@role.Role</div> 
+        <div>
+            @Html.ActionLink(role.Role,"EditRole/" + role.Id, "RoleManagement")
+         </div> 
         }
     }
 
