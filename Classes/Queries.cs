@@ -40,7 +40,7 @@ namespace DebugToolCSharp.Classes
         {
             var mPages = new Pages();
             var q = "select * from pages where id = @id";
-            var listRoleIds = new List<int>();
+            var listRoles = new List<Roles>();
 
             using (SQLiteConnection c = new SQLiteConnection(ConfigurationManager.AppSettings["SQLiteConnectionString"]))
             {
@@ -62,7 +62,9 @@ namespace DebugToolCSharp.Classes
                 }
             }
 
-            q = "select role_id from pages_roles where page_id = @id";
+            q = @"select roles.id, roles.role from roles
+                    inner join pages_roles on pages_roles.role_id = roles.id
+                    where pages_roles.page_id = @id";
             using (SQLiteConnection c = new SQLiteConnection(ConfigurationManager.AppSettings["SQLiteConnectionString"]))
             {
                 c.Open();
@@ -75,14 +77,14 @@ namespace DebugToolCSharp.Classes
                         {
                             while (result.Read())
                             {
-                                listRoleIds.Add(int.Parse(result["role_id"].ToString()));
+                                listRoles.Add(new Roles { Id = int.Parse(result["roles.id"].ToString()), Role = result["roles.role"].ToString() });
                             }
                         }
                     }
                 }
             }
-            mPages.RoleIds = listRoleIds;
-
+            mPages.Roles = listRoles;
+ 
             return mPages;
         }
 

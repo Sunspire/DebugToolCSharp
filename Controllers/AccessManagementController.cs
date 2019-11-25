@@ -23,7 +23,6 @@ namespace DebugToolCSharp.Controllers
         [HttpGet]
         public ActionResult EditAccess(int id) 
         {
-            var mPages = new Pages();
             var mAccessManagement = new AccessManagement();
             var listPages = new List<Pages>();
 

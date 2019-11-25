@@ -9,6 +9,6 @@ namespace DebugToolCSharp.Models
     {
         public int Id { get; set; }
         public string PageName { get; set; }
-        public List<int> RoleIds { get; set; }
+        public List<Roles> Roles { get; set; }
     }
 }
