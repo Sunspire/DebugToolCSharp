@@ -9,10 +9,11 @@ namespace DebugToolCSharp.Models
     {
         public Roles Role { get; set; }
         public Users User { get; set; }
-        public string[] RoleIds { get; set; }
         public string[] PageIds { get; set; }
         public int PageId { get; set; }
+        public string PageName { get; set; }
         public List<Pages> ListPages {get; set;}
+        public List<Roles> ListRoles { get; set; }
 
     }
 }

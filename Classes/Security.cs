@@ -9,7 +9,7 @@ namespace DebugToolCSharp.Classes
 {
     public class Security
     {
-        public static System.Web.WebPages.HelperResult VerifyLoginStatus(List<int> roleIds)
+        public static System.Web.WebPages.HelperResult VerifyLoginStatus(int pageId)
         {
             var loginSessionName = ConfigurationManager.AppSettings["LoginSessionName"].ToString();
             if (HttpContext.Current.Session[loginSessionName] is null) 
@@ -29,6 +29,14 @@ namespace DebugToolCSharp.Classes
 
             LoginModel userDetails = new LoginModel();
             userDetails = (LoginModel)HttpContext.Current.Session[loginSessionName];
+
+            var page = Queries.GetPageById(pageId);
+            List<int> roleIds = new List<int>();
+
+            foreach (var item in page.Roles) 
+            {
+                roleIds.Add(item.Id);
+            }
 
             if (!roleIds.Contains(userDetails.RoleId)) 
             {

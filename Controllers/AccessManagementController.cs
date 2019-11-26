@@ -28,14 +28,25 @@ namespace DebugToolCSharp.Controllers
 
             listPages.Add(Queries.GetPageById(id));
             mAccessManagement.ListPages = listPages;
+            mAccessManagement.ListRoles = Queries.GetAllRoles();
+            mAccessManagement.PageId = id;
 
             return View("EditAccess", mAccessManagement);
         }
 
         [HttpPost]
-        public ActionResult EditAccess(AccessManagement accessManagement)
+        public ActionResult EditAccess(AccessManagement accessManagement, string[] selectedRoles)
         {
-            return View();
+            var resutl = Queries.UpdatePageRoles(accessManagement.PageId, Array.ConvertAll(selectedRoles, int.Parse));
+
+            var mAccessManagement = new AccessManagement();
+            var listPages = new List<Pages>();
+
+            listPages.Add(Queries.GetPageById(accessManagement.PageId));
+            mAccessManagement.ListPages = listPages;
+            mAccessManagement.ListRoles = Queries.GetAllRoles();
+
+            return View("EditAccess", mAccessManagement);
         }
     }
 }

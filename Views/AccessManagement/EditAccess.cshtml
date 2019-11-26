@@ -1,21 +1,40 @@
 ﻿@model DebugToolCSharp.Models.AccessManagement
-
+@{
+    ViewBag.Title = "Access Management";
+}
 @using (Html.BeginForm())
 {
     @Html.AntiForgeryToken()
-    
+
     <div class="form-horizontal">
         <h4>Access Management</h4>
         <hr />
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        <div>Page: @Model.ListPages[0].PageName</div>
         <div class="form-group">
-            @Html.LabelFor(model => model.PageId, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.PageId, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.PageId, "", new { @class = "text-danger" })
-            </div>
-        </div>
 
+            <br /><br />
+            @{
+                foreach (var role in Model.ListRoles)
+                {
+                    bool isChecked = false;
+                    foreach (var roleCheck in Model.ListPages[0].Roles)
+                    {
+                        if (role.Id == roleCheck.Id)
+                        {
+                            isChecked = true;
+                            break;
+                        }
+                    }
+                    <div>
+                        <input type="checkbox" class="checkbox" name="selectedRoles" value="@role.Id" id="@role.Role" checked="@isChecked" />
+                        <label for="@role.Role">@role.Role</label>
+                    </div>
+                }
+            }
+
+        </div>
+        @Html.HiddenFor(m => m.PageId)
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
                 <input type="submit" value="Save" class="btn btn-default" />

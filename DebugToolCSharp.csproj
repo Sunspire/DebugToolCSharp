@@ -136,6 +136,7 @@
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="Classes\PagesEnum.cs" />
     <Compile Include="Classes\Queries.cs" />
     <Compile Include="Classes\Security.cs" />
     <Compile Include="Controllers\AccessManagementController.cs" />

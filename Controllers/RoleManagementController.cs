@@ -20,9 +20,8 @@ namespace DebugToolCSharp.Controllers
 
         [HttpGet]
         public ActionResult AddRole()
-        {
-            List<int> roleIds = new List<int> { 1 };
-            Security.VerifyLoginStatus(roleIds);
+        {   
+            Security.VerifyLoginStatus((int)PagesEnum.Pages.RoleManagement);
 
             var mRoleManagement = new RoleManagement();
             mRoleManagement.Success = true;
