@@ -17,17 +17,17 @@
             @{
                 foreach (var role in Model.ListRoles)
                 {
-                    bool isChecked = false;
+                    string isChecked = string.Empty;
                     foreach (var roleCheck in Model.ListPages[0].Roles)
                     {
                         if (role.Id == roleCheck.Id)
                         {
-                            isChecked = true;
+                            isChecked = "checked";
                             break;
                         }
                     }
                     <div>
-                        <input type="checkbox" class="checkbox" name="selectedRoles" value="@role.Id" id="@role.Role" checked="@isChecked" />
+                        <input type="checkbox" class="checkbox" name="selectedRoles" value="@role.Id" id="@role.Role" @isChecked />
                         <label for="@role.Role">@role.Role</label>
                     </div>
                 }

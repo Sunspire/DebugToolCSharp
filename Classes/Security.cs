@@ -22,8 +22,6 @@ namespace DebugToolCSharp.Classes
                 }
                 redirectCookie["redirect_path"] = HttpContext.Current.Request.Url.AbsolutePath;
                 HttpContext.Current.Response.Cookies.Add(redirectCookie);
-
-                //HttpContext.Current.Session[ConfigurationManager.AppSettings["LoginRedirectName"].ToString()] = HttpContext.Current.Request.Url.AbsolutePath;
                 HttpContext.Current.Response.Redirect("/Login");
             }
 

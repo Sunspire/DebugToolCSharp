@@ -18,7 +18,7 @@
                         var checkLogin = (DebugToolCSharp.Models.LoginModel)Session[loginSessionName];
                         if (checkLogin.Sucess)
                         {
-                            <div>Hi @checkLogin.Name, @Html.ActionLink("Logout", "LogoutUser", "Login")</div>
+                            <div>@Html.ActionLink("Hi " + @checkLogin.Name, "Profile", "UserManagement"), @Html.ActionLink("Logout", "LogoutUser", "Login")</div>
                         }
                     }
                     else
