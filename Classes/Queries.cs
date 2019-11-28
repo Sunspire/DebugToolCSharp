@@ -10,6 +10,33 @@ namespace DebugToolCSharp.Classes
 {
     public class Queries
     {
+        private static int GetMaxId(string tableName)
+        {
+            var q = string.Format("select (max(id) + 1) as [maxId] from {0}", tableName);
+            using (SQLiteConnection c = new SQLiteConnection(ConfigurationManager.AppSettings["SQLiteConnectionString"]))
+            {
+                c.Open();
+                using (SQLiteCommand cmd = new SQLiteCommand(q, c))
+                {
+                    using (SQLiteDataReader result = cmd.ExecuteReader())
+                    {
+                        if (result.HasRows)
+                        {
+                            while (result.Read())
+                            {
+                                var resultMID = result["maxId"].ToString();
+                                if (!string.IsNullOrEmpty(resultMID))
+                                {
+                                    return int.Parse(resultMID);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            return 1;
+        }
+
         public static string UpdatePageRoles(int pageId, int[] roleIds)
         {
             //Delete current roles
@@ -447,6 +474,48 @@ namespace DebugToolCSharp.Classes
                     cmd.Parameters.AddWithValue("@id", userRoleId);
                     cmd.Parameters.AddWithValue("@user_id", userId);
                     cmd.Parameters.AddWithValue("@role_id", userManagement.RoleId);
+                    cmd.ExecuteNonQuery();
+                }
+            }
+
+            return string.Empty;
+        }
+
+        public static string AddTicketStatus(TicketStatus ticketStatus)
+        {
+            var q = "select count(1) as mycount from ticket_status where description = @description";
+            var connectionString = ConfigurationManager.AppSettings["SQLiteConnectionString"];
+
+            using (SQLiteConnection c = new SQLiteConnection(connectionString))
+            {
+                c.Open();
+                using (SQLiteCommand cmd = new SQLiteCommand(q, c))
+                {
+                    cmd.Parameters.AddWithValue("@description", ticketStatus.Description);
+                    using (SQLiteDataReader result = cmd.ExecuteReader())
+                    {
+                        if (result.HasRows)
+                        {
+                            while (result.Read())
+                            {
+                                if (int.Parse(result["mycount"].ToString()) == 1)
+                                {
+                                    return "This status already exists";
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            
+            q = "insert into ticket_status values(@id, @description)";
+            using (SQLiteConnection c = new SQLiteConnection(connectionString))
+            {
+                c.Open();
+                using (SQLiteCommand cmd = new SQLiteCommand(q, c))
+                {
+                    cmd.Parameters.AddWithValue("@id", GetMaxId("ticket_status"));
+                    cmd.Parameters.AddWithValue("@description", ticketStatus.Description);
                     cmd.ExecuteNonQuery();
                 }
             }

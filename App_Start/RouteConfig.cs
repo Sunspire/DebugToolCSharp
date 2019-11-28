@@ -58,13 +58,31 @@ namespace DebugToolCSharp
             routes.MapRoute(
                 name: "AccessManagement",
                 url: "{controller}/{action}",
-                defaults: new { controller = "AccessManagement", action = "Index"}
+                defaults: new { controller = "AccessManagement", action = "Index" }
                 );
 
             routes.MapRoute(
                 name: "EditAccess",
                 url: "{controller}/{action}/{id}",
                 defaults: new { controller = "AccessManagement", action = "EditAccess", id = UrlParameter.Optional }
+                );
+
+            routes.MapRoute(
+                name: "AddTicketStatus",
+                url: "{controller}/{action}",
+                defaults: new { controller = "TicketStatusManagement", action = "AddTicketStatus" }
+                );
+
+            routes.MapRoute(
+                name: "EditTicketStatus",
+                url: "{controller}/{action}/{id}",
+                defaults: new { controller = "TicketStatusManagement", action = "EditTicketStatus", id = UrlParameter.Optional }
+                );
+
+            routes.MapRoute(
+                name: "DeleteTicketStatus",
+                url: "{controller}/{action}/{id}",
+                defaults: new { controller = "TicketStatusManagement", action = "DeleteTicketStatus", id = UrlParameter.Optional }
                 );
         }
     }
