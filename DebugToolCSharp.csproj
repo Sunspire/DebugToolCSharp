@@ -153,6 +153,7 @@
     <Compile Include="Models\Pages.cs" />
     <Compile Include="Models\RoleManagement.cs" />
     <Compile Include="Models\Roles.cs" />
+    <Compile Include="Models\TicketSeverity.cs" />
     <Compile Include="Models\TicketStatus.cs" />
     <Compile Include="Models\UserManagement.cs" />
     <Compile Include="Models\Users.cs" />
@@ -240,10 +241,10 @@
     <Content Include="Views\RoleManagement\EditRole.cshtml" />
     <Content Include="Views\AccessManagement\Index.cshtml" />
     <Content Include="Views\AccessManagement\EditAccess.cshtml" />
+    <Content Include="Views\TicketStatusManagement\AddTicketStatus.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Views\TicketStatusManagement\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

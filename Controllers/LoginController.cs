@@ -16,9 +16,7 @@ namespace DebugToolCSharp.Controllers
         // GET: Login
         public ActionResult Index()
         {
-            var mLogin = new LoginModel();
-            mLogin.Sucess = true;
-            return View("Index", mLogin);
+            return View("Index", new LoginModel() { Sucess = true });
         }
 
         [HttpPost]

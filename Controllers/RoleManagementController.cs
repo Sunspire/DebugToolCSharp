@@ -13,21 +13,14 @@ namespace DebugToolCSharp.Controllers
         // GET: RoleManagement
         public ActionResult Index()
         {
-            var mRoleManagement = new RoleManagement();
-            mRoleManagement.Roles = Queries.GetAllRoles();
-            return View("Index", mRoleManagement);
+            return View("Index", new RoleManagement() { Roles = Queries.GetAllRoles() });
         }
 
         [HttpGet]
         public ActionResult AddRole()
         {   
             Security.VerifyLoginStatus((int)PagesEnum.Pages.RoleManagement);
-
-            var mRoleManagement = new RoleManagement();
-            mRoleManagement.Success = true;
-            mRoleManagement.Message = string.Empty;
-            mRoleManagement.Roles = Queries.GetAllRoles();
-            return View("AddRole", mRoleManagement);
+            return View("AddRole", new RoleManagement() { Success = true, Message = string.Empty, Roles = Queries.GetAllRoles() });
         }
 
         [HttpPost]

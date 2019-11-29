@@ -13,11 +13,7 @@ namespace DebugToolCSharp.Controllers
         // GET: AccessManagement
         public ActionResult Index()
         {
-            var mAccessManagement = new AccessManagement();
-
-            mAccessManagement.ListPages = Queries.GetAllPages();
-            
-            return View("Index", mAccessManagement);
+            return View("Index", new AccessManagement() { ListPages = Queries.GetAllPages() });
         }
 
         [HttpGet]

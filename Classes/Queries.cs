@@ -71,11 +71,11 @@ namespace DebugToolCSharp.Classes
             return string.Empty;
         }
 
-        public static List<Pages> GetAllPages() 
+        public static List<Pages> GetAllPages()
         {
             var listPages = new List<Pages>();
             var q = "select * from pages";
-            
+
             using (SQLiteConnection c = new SQLiteConnection(ConfigurationManager.AppSettings["SQLiteConnectionString"]))
             {
                 c.Open();
@@ -148,7 +148,7 @@ namespace DebugToolCSharp.Classes
                 }
             }
             mPages.Roles = listRoles;
- 
+
             return mPages;
         }
 
@@ -156,15 +156,15 @@ namespace DebugToolCSharp.Classes
         {
             var q = "select count(1) as mycount from users where login=@login and password=@pwd";
 
-            using (SQLiteConnection c = new SQLiteConnection(ConfigurationManager.AppSettings["SQLiteConnectionString"])) 
+            using (SQLiteConnection c = new SQLiteConnection(ConfigurationManager.AppSettings["SQLiteConnectionString"]))
             {
                 c.Open();
-                using (SQLiteCommand cmd = new SQLiteCommand(q, c)) 
+                using (SQLiteCommand cmd = new SQLiteCommand(q, c))
                 {
                     cmd.Parameters.AddWithValue("@login", login);
                     cmd.Parameters.AddWithValue("@pwd", pwd);
 
-                    using (SQLiteDataReader result = cmd.ExecuteReader()) 
+                    using (SQLiteDataReader result = cmd.ExecuteReader())
                     {
                         if (result.HasRows)
                         {
@@ -172,7 +172,7 @@ namespace DebugToolCSharp.Classes
                             {
                                 if (int.Parse(result["mycount"].ToString()) == 1)
                                 {
-                                   return true;
+                                    return true;
                                 }
                             }
                         }
@@ -212,7 +212,7 @@ namespace DebugToolCSharp.Classes
             return loginModel;
         }
 
-        public static string AddRole(string roleName) 
+        public static string AddRole(string roleName)
         {
             var q = "select * from roles where role=@roleName";
             var connectionString = ConfigurationManager.AppSettings["SQLiteConnectionString"];
@@ -223,37 +223,13 @@ namespace DebugToolCSharp.Classes
                 using (SQLiteCommand cmd = new SQLiteCommand(q, c))
                 {
                     cmd.Parameters.AddWithValue("@roleName", roleName);
-                    using (SQLiteDataReader result = cmd.ExecuteReader()) 
+                    using (SQLiteDataReader result = cmd.ExecuteReader())
                     {
                         if (result.HasRows)
                         {
                             return "This role already exists";
                         }
-                    }   
-                }
-            }
-
-            q = "select (max(id) + 1) as [maxId] from roles";
-            int maxId = 1;
-            using (SQLiteConnection c = new SQLiteConnection(connectionString))
-            {
-                c.Open();
-                using (SQLiteCommand cmd = new SQLiteCommand(q, c))
-                {
-                    using (SQLiteDataReader result = cmd.ExecuteReader()) 
-                    {
-                        if (result.HasRows)
-                        {
-                            while (result.Read())
-                            {
-                                var resultMID = result["maxId"].ToString();
-                                if (!string.IsNullOrEmpty(resultMID))
-                                {
-                                    maxId = int.Parse(resultMID);
-                                }
-                            }
-                        }
-                    }   
+                    }
                 }
             }
 
@@ -263,7 +239,7 @@ namespace DebugToolCSharp.Classes
                 c.Open();
                 using (SQLiteCommand cmd = new SQLiteCommand(q, c))
                 {
-                    cmd.Parameters.AddWithValue("@id", maxId);
+                    cmd.Parameters.AddWithValue("@id", GetMaxId("roles"));
                     cmd.Parameters.AddWithValue("@roleName", roleName);
                     cmd.ExecuteNonQuery();
                 }
@@ -294,10 +270,10 @@ namespace DebugToolCSharp.Classes
                     }
                 }
             }
-            return listRoles; 
+            return listRoles;
         }
 
-        public static Roles GetRoleById(int id) 
+        public static Roles GetRoleById(int id)
         {
             var mRoles = new Roles();
             var q = "select * from roles where id = @id";
@@ -354,7 +330,7 @@ namespace DebugToolCSharp.Classes
 
         public static string UpdateRoleById(RoleManagement roleManagement)
         {
-            if (!string.IsNullOrEmpty(GetRoleByName(roleManagement.Role).Role)) 
+            if (!string.IsNullOrEmpty(GetRoleByName(roleManagement.Role).Role))
             {
                 return "This role already exists";
             }
@@ -375,7 +351,7 @@ namespace DebugToolCSharp.Classes
             return string.Empty;
         }
 
-        public static string AddUser(UserManagement userManagement) 
+        public static string AddUser(UserManagement userManagement)
         {
             var q = "select count(1) as mycount from users where login=@login";
             var connectionString = ConfigurationManager.AppSettings["SQLiteConnectionString"];
@@ -399,57 +375,10 @@ namespace DebugToolCSharp.Classes
                             }
                         }
                     }
-                    
                 }
             }
 
-            q = "select (max(id) + 1) as [maxId] from users";
-            int userId = 1;
-            using (SQLiteConnection c = new SQLiteConnection(connectionString))
-            {
-                c.Open();
-                using (SQLiteCommand cmd = new SQLiteCommand(q, c))
-                {
-                    using (SQLiteDataReader result = cmd.ExecuteReader()) 
-                    {
-                        if (result.HasRows)
-                        {
-                            while (result.Read())
-                            {
-                                var resultMID = result["maxId"].ToString();
-                                if (!string.IsNullOrEmpty(resultMID))
-                                {
-                                    userId = int.Parse(resultMID);
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-
-            q = "select (max(id) + 1) as [maxId] from users_roles";
-            int userRoleId = 1;
-            using (SQLiteConnection c = new SQLiteConnection(connectionString))
-            {
-                c.Open();
-                using (SQLiteCommand cmd = new SQLiteCommand(q, c))
-                {
-                    using (SQLiteDataReader result = cmd.ExecuteReader())
-                    {
-                        if (result.HasRows)
-                        {
-                            while (result.Read())
-                            {
-                                var resultMID = result["maxId"].ToString();
-                                if (!string.IsNullOrEmpty(resultMID))
-                                {
-                                    userRoleId = int.Parse(resultMID);
-                                }
-                            }
-                        }
-                    }
-                }
-            }
+            int userId = GetMaxId("users");
 
             q = "insert into users values(@id, @name, @login, @password)";
             using (SQLiteConnection c = new SQLiteConnection(connectionString))
@@ -471,7 +400,7 @@ namespace DebugToolCSharp.Classes
                 c.Open();
                 using (SQLiteCommand cmd = new SQLiteCommand(q, c))
                 {
-                    cmd.Parameters.AddWithValue("@id", userRoleId);
+                    cmd.Parameters.AddWithValue("@id", GetMaxId("roles"));
                     cmd.Parameters.AddWithValue("@user_id", userId);
                     cmd.Parameters.AddWithValue("@role_id", userManagement.RoleId);
                     cmd.ExecuteNonQuery();
@@ -507,7 +436,7 @@ namespace DebugToolCSharp.Classes
                     }
                 }
             }
-            
+
             q = "insert into ticket_status values(@id, @description)";
             using (SQLiteConnection c = new SQLiteConnection(connectionString))
             {
@@ -516,6 +445,48 @@ namespace DebugToolCSharp.Classes
                 {
                     cmd.Parameters.AddWithValue("@id", GetMaxId("ticket_status"));
                     cmd.Parameters.AddWithValue("@description", ticketStatus.Description);
+                    cmd.ExecuteNonQuery();
+                }
+            }
+
+            return string.Empty;
+        }
+
+        public static string AddTicketSeverity(TicketSeverity ticketSeverity)
+        {
+            var q = "select count(1) as mycount from ticket_severity where description = @description";
+            var connectionString = ConfigurationManager.AppSettings["SQLiteConnectionString"];
+
+            using (SQLiteConnection c = new SQLiteConnection(connectionString))
+            {
+                c.Open();
+                using (SQLiteCommand cmd = new SQLiteCommand(q, c))
+                {
+                    cmd.Parameters.AddWithValue("@description", ticketSeverity.Description);
+                    using (SQLiteDataReader result = cmd.ExecuteReader())
+                    {
+                        if (result.HasRows)
+                        {
+                            while (result.Read())
+                            {
+                                if (int.Parse(result["mycount"].ToString()) == 1)
+                                {
+                                    return "This status already exists";
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+            q = "insert into ticket_severity values(@id, @description)";
+            using (SQLiteConnection c = new SQLiteConnection(connectionString))
+            {
+                c.Open();
+                using (SQLiteCommand cmd = new SQLiteCommand(q, c))
+                {
+                    cmd.Parameters.AddWithValue("@id", GetMaxId("ticket_severity"));
+                    cmd.Parameters.AddWithValue("@description", ticketSeverity.Description);
                     cmd.ExecuteNonQuery();
                 }
             }

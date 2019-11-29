@@ -19,7 +19,7 @@ namespace DebugToolCSharp.Controllers
         [HttpGet]
         public ActionResult AddTicketStatus() 
         {
-            return View();
+            return View("AddTicketStatus", new TicketStatus() { Success = true, Message = string.Empty });
         }
 
         [HttpPost]
@@ -35,18 +35,51 @@ namespace DebugToolCSharp.Controllers
             }
 
             var result = Queries.AddTicketStatus(ticketStatus);
-            /*if (string.IsNullOrEmpty(result))
+            if (string.IsNullOrEmpty(result))
             {
-                mUserManagement.Success = true;
-                mUserManagement.Message = "User added";
+                mTicketStatus.Success = true;
+                mTicketStatus.Message = "Ticket status added";
             }
             else
             {
-                mUserManagement.Success = false;
-                mUserManagement.Message = result;
-            }*/
+                mTicketStatus.Success = false;
+                mTicketStatus.Message = result;
+            }
 
-            return View();
+            return View("AddTicketStatus", mTicketStatus);
+        }
+
+        [HttpGet]
+        public ActionResult AddTicketSeverity()
+        {
+            return View("AddTicketSeverity", new TicketSeverity() { Success = true, Message = string.Empty });
+        }
+
+        [HttpPost]
+        public ActionResult AddTicketSeverity(TicketSeverity ticketSeverity)
+        {
+            var mTicketSeverity = new TicketSeverity();
+
+            if (string.IsNullOrEmpty(ticketSeverity.Description))
+            {
+                mTicketSeverity.Success = false;
+                mTicketSeverity.Message = "Fill in all of the fields";
+                return View("AddTicketStatus", mTicketSeverity);
+            }
+
+            var result = Queries.AddTicketSeverity(ticketSeverity);
+            if (string.IsNullOrEmpty(result))
+            {
+                mTicketSeverity.Success = true;
+                mTicketSeverity.Message = "Ticket severity added";
+            }
+            else
+            {
+                mTicketSeverity.Success = false;
+                mTicketSeverity.Message = result;
+            }
+
+            return View("AddTicketSeverity", mTicketSeverity);
         }
     }
 }
