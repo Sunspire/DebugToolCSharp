@@ -13,7 +13,7 @@ namespace DebugToolCSharp.Controllers
         // GET: TicketStatusManagement
         public ActionResult Index()
         {
-            return View();
+            return View("Index", new TicketStatusManagement() { TicketStatus = Queries.GetAllTicketStatus() });
         }
 
         [HttpGet]
@@ -47,6 +47,52 @@ namespace DebugToolCSharp.Controllers
             }
 
             return View("AddTicketStatus", mTicketStatus);
+        }
+
+        [HttpGet]
+        public ActionResult EditTicketStatus(int id)
+        {
+            var mTicketStatus = new TicketStatus();
+            var mTicketStatusManagement = new TicketStatusManagement();
+
+            mTicketStatus = Queries.GetTicketStatusById(id);
+            mTicketStatusManagement.Id = id;
+            mTicketStatusManagement.Description = mTicketStatus.Description;
+            mTicketStatusManagement.Message = string.Empty;
+
+            return View("EditTicketStatus", mTicketStatusManagement);
+        }
+
+        [HttpPost]
+        public ActionResult EditTicketStatus(TicketStatusManagement ticketStatusManagement)
+        {
+            var mTicketStatusManagement = new TicketStatusManagement();
+
+            mTicketStatusManagement.Id = ticketStatusManagement.Id;
+            mTicketStatusManagement.Success = true;
+
+            if (string.IsNullOrEmpty(ticketStatusManagement.Description)) 
+            {
+                mTicketStatusManagement.Success = false;
+                mTicketStatusManagement.Message = "Role is empty";
+                return View("EditTicketStatus", mTicketStatusManagement);
+            }
+
+            mTicketStatusManagement.Message = ""; // Queries.UpdateTicketStatusById(ticketStatusManagement);
+            mTicketStatusManagement.Success = false;
+
+            if (string.IsNullOrEmpty(mTicketStatusManagement.Message))
+            {
+                mTicketStatusManagement.Success = true;
+                mTicketStatusManagement.Message = "Ticket Status description updated";
+            }
+
+            var mTicketStatus = Queries.GetTicketStatusById(ticketStatusManagement.Id);
+
+            mTicketStatusManagement.Description = mTicketStatus.Description;
+            //mRoleManagement.PreviousRole = mRoles.Role;
+
+            return View("EditTicketStatus");
         }
 
         [HttpGet]

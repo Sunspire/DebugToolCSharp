@@ -273,6 +273,58 @@ namespace DebugToolCSharp.Classes
             return listRoles;
         }
 
+        public static List<TicketStatus> GetAllTicketStatus()
+        {
+            var listTicketStatus = new List<TicketStatus>();
+            var q = "select * from ticket_status order by description";
+
+            using (SQLiteConnection c = new SQLiteConnection(ConfigurationManager.AppSettings["SQLiteConnectionString"]))
+            {
+                c.Open();
+                using (SQLiteCommand cmd = new SQLiteCommand(q, c))
+                {
+                    using (SQLiteDataReader result = cmd.ExecuteReader())
+                    {
+                        if (result.HasRows)
+                        {
+                            while (result.Read())
+                            {
+                                listTicketStatus.Add(new TicketStatus() { Id = int.Parse(result["id"].ToString()), Description = result["description"].ToString() });
+                            }
+                        }
+                    }
+                }
+            }
+            return listTicketStatus;
+        }
+
+        public static TicketStatus GetTicketStatusById(int id)
+        {
+            var mTicketStatus = new TicketStatus();
+            var q = "select * from ticket_status where id = @id";
+
+            using (SQLiteConnection c = new SQLiteConnection(ConfigurationManager.AppSettings["SQLiteConnectionString"]))
+            {
+                c.Open();
+                using (SQLiteCommand cmd = new SQLiteCommand(q, c))
+                {
+                    cmd.Parameters.AddWithValue("@id", id);
+                    using (SQLiteDataReader result = cmd.ExecuteReader())
+                    {
+                        if (result.HasRows)
+                        {
+                            while (result.Read())
+                            {
+                                mTicketStatus.Id = int.Parse(result["id"].ToString());
+                                mTicketStatus.Description = result["description"].ToString();
+                            }
+                        }
+                    }
+                }
+            }
+            return mTicketStatus;
+        }
+
         public static Roles GetRoleById(int id)
         {
             var mRoles = new Roles();

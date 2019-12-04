@@ -68,6 +68,12 @@ namespace DebugToolCSharp
                 );
 
             routes.MapRoute(
+                name: "TicketStatusManagement",
+                url: "{controller}/{action}",
+                defaults: new { controller = "TicketStatusManagement", action = "Index" }
+                );
+
+            routes.MapRoute(
                 name: "AddTicketStatus",
                 url: "{controller}/{action}",
                 defaults: new { controller = "TicketStatusManagement", action = "AddTicketStatus" }
