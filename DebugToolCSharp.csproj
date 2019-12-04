@@ -242,6 +242,7 @@
     <Content Include="Views\AccessManagement\Index.cshtml" />
     <Content Include="Views\AccessManagement\EditAccess.cshtml" />
     <Content Include="Views\TicketStatusManagement\AddTicketStatus.cshtml" />
+    <Content Include="Views\TicketStatusManagement\AddTicketSeverity.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
