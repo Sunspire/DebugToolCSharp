@@ -298,6 +298,34 @@ namespace DebugToolCSharp.Classes
             return listTicketStatus;
         }
 
+        public static TicketStatus GetTicketStatusByName(string description)
+        {
+            var mTicketStatus = new TicketStatus();
+            var q = "select * from ticket_status where description = @description";
+
+            using (SQLiteConnection c = new SQLiteConnection(ConfigurationManager.AppSettings["SQLiteConnectionString"]))
+            {
+                c.Open();
+                using (SQLiteCommand cmd = new SQLiteCommand(q, c))
+                {
+                    cmd.Parameters.AddWithValue("@description", description);
+                    using (SQLiteDataReader result = cmd.ExecuteReader())
+                    {
+                        if (result.HasRows)
+                        {
+                            while (result.Read())
+                            {
+                                mTicketStatus.Id = int.Parse(result["id"].ToString());
+                                mTicketStatus.Description = result["description"].ToString();
+                            }
+                        }
+                    }
+                }
+            }
+
+            return mTicketStatus;
+        }
+
         public static TicketStatus GetTicketStatusById(int id)
         {
             var mTicketStatus = new TicketStatus();
@@ -497,6 +525,29 @@ namespace DebugToolCSharp.Classes
                 {
                     cmd.Parameters.AddWithValue("@id", GetMaxId("ticket_status"));
                     cmd.Parameters.AddWithValue("@description", ticketStatus.Description);
+                    cmd.ExecuteNonQuery();
+                }
+            }
+
+            return string.Empty;
+        }
+
+        public static string UpdateTicketStatusById(TicketStatusManagement ticketStatusManagement) 
+        {
+            if (!string.IsNullOrEmpty(GetTicketStatusByName(ticketStatusManagement.Description).Description)) 
+            {
+                return "This description already exists";
+            }
+
+            var q = "update ticket_status set description = @description where id = @id";
+
+            using (SQLiteConnection c = new SQLiteConnection(ConfigurationManager.AppSettings["SQLiteConnectionString"]))
+            {
+                c.Open();
+                using (SQLiteCommand cmd = new SQLiteCommand(q, c))
+                {
+                    cmd.Parameters.AddWithValue("@id", ticketStatusManagement.Id);
+                    cmd.Parameters.AddWithValue("@description", ticketStatusManagement.Description);
                     cmd.ExecuteNonQuery();
                 }
             }

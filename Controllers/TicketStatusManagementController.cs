@@ -78,7 +78,7 @@ namespace DebugToolCSharp.Controllers
                 return View("EditTicketStatus", mTicketStatusManagement);
             }
 
-            mTicketStatusManagement.Message = ""; // Queries.UpdateTicketStatusById(ticketStatusManagement);
+            mTicketStatusManagement.Message = Queries.UpdateTicketStatusById(ticketStatusManagement);
             mTicketStatusManagement.Success = false;
 
             if (string.IsNullOrEmpty(mTicketStatusManagement.Message))
@@ -90,9 +90,8 @@ namespace DebugToolCSharp.Controllers
             var mTicketStatus = Queries.GetTicketStatusById(ticketStatusManagement.Id);
 
             mTicketStatusManagement.Description = mTicketStatus.Description;
-            //mRoleManagement.PreviousRole = mRoles.Role;
 
-            return View("EditTicketStatus");
+            return View("EditTicketStatus", mTicketStatusManagement);
         }
 
         [HttpGet]
