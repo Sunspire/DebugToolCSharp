@@ -246,6 +246,7 @@
     <Content Include="Views\TicketStatusManagement\AddTicketSeverity.cshtml" />
     <Content Include="Views\TicketStatusManagement\Index.cshtml" />
     <Content Include="Views\TicketStatusManagement\EditTicketStatus.cshtml" />
+    <Content Include="Views\TicketStatusManagement\DeleteTicketStatus.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

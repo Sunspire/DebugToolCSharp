@@ -1,0 +1,41 @@
+﻿@model DebugToolCSharp.Models.TicketStatusManagement
+@{
+    ViewBag.Title = "Delete Ticket Status";
+}
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+        <h4>Delete Ticket Status</h4>
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        <div>
+            Select from the list and click "Delete".
+            <br />
+            This action cannot be undone.
+            <br /><br/>
+        </div>
+        <div class="form-group">
+            @{
+                foreach (var status in Model.TicketStatus) 
+                {
+                    <div>
+                        <input type="checkbox" class="checkbox" name="selectedStatus" value="@status.Id" id="@status.Id" />
+                        <label for="@status.Description">@status.Description</label>
+                    </div>
+                }
+            }
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Delete" class="btn btn-default" />
+            </div>
+        </div>
+    </div>
+}
+
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>

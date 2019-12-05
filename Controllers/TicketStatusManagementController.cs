@@ -74,7 +74,7 @@ namespace DebugToolCSharp.Controllers
             if (string.IsNullOrEmpty(ticketStatusManagement.Description)) 
             {
                 mTicketStatusManagement.Success = false;
-                mTicketStatusManagement.Message = "Role is empty";
+                mTicketStatusManagement.Message = "Description is empty";
                 return View("EditTicketStatus", mTicketStatusManagement);
             }
 
@@ -92,6 +92,26 @@ namespace DebugToolCSharp.Controllers
             mTicketStatusManagement.Description = mTicketStatus.Description;
 
             return View("EditTicketStatus", mTicketStatusManagement);
+        }
+
+        [HttpGet]
+        public ActionResult DeleteTicketStatus()
+        {
+            var mTicketStatusManagement = new TicketStatusManagement();
+
+            mTicketStatusManagement.TicketStatus = Queries.GetAllTicketStatus();
+
+            return View("DeleteTicketStatus", mTicketStatusManagement);
+        }
+
+        [HttpPost]
+        public ActionResult DeleteTicketStatus(TicketStatusManagement ticketStatusManagement, string[] selectedStatus)
+        {
+            var mTicketStatusManagement = new TicketStatusManagement();
+
+            mTicketStatusManagement.TicketStatus = Queries.GetAllTicketStatus();
+
+            return View("DeleteTicketStatus", mTicketStatusManagement);
         }
 
         [HttpGet]

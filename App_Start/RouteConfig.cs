@@ -87,8 +87,8 @@ namespace DebugToolCSharp
 
             routes.MapRoute(
                 name: "DeleteTicketStatus",
-                url: "{controller}/{action}/{id}",
-                defaults: new { controller = "TicketStatusManagement", action = "DeleteTicketStatus", id = UrlParameter.Optional }
+                url: "{controller}/{action}",
+                defaults: new { controller = "TicketStatusManagement", action = "DeleteTicketStatus" }
                 );
         }
     }
