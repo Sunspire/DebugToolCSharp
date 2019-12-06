@@ -108,6 +108,14 @@ namespace DebugToolCSharp.Controllers
         public ActionResult DeleteTicketStatus(TicketStatusManagement ticketStatusManagement, string[] selectedStatus)
         {
             var mTicketStatusManagement = new TicketStatusManagement();
+            var result = Queries.DeleteTicketStatusById(Array.ConvertAll(selectedStatus, int.Parse));
+
+            mTicketStatusManagement.Success = true;
+            if (!string.IsNullOrEmpty(result)) 
+            {
+                mTicketStatusManagement.Success = false;
+                mTicketStatusManagement.Message = result;
+            }
 
             mTicketStatusManagement.TicketStatus = Queries.GetAllTicketStatus();
 

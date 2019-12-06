@@ -9,16 +9,32 @@
     <div class="form-horizontal">
         <h4>Delete Ticket Status</h4>
         <hr />
-        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        @*Html.ValidationSummary(true, "", new { @class = "text-danger" })*@
+        @{
+            if (!string.IsNullOrEmpty(Model.Message))
+            {
+                var cssClass = string.Empty;
+                if (Model.Success)
+                {
+                    cssClass = "text-info";
+                }
+                else
+                {
+                    cssClass = "text-danger";
+                }
+
+                @Html.Label(@Model.Message, new { @class = cssClass })
+            }
+        }
         <div>
             Select from the list and click "Delete".
             <br />
             This action cannot be undone.
-            <br /><br/>
+            <br /><br />
         </div>
         <div class="form-group">
             @{
-                foreach (var status in Model.TicketStatus) 
+                foreach (var status in Model.TicketStatus)
                 {
                     <div>
                         <input type="checkbox" class="checkbox" name="selectedStatus" value="@status.Id" id="@status.Id" />
