@@ -12,6 +12,7 @@ namespace DebugToolCSharp.Classes
     {
         private static int GetMaxId(string tableName)
         {
+            var i = 1; //test
             var q = string.Format("select (max(id) + 1) as [maxId] from {0}", tableName);
             using (SQLiteConnection c = new SQLiteConnection(ConfigurationManager.AppSettings["SQLiteConnectionString"]))
             {
